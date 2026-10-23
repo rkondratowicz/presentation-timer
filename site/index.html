@@ -3,18 +3,202 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A silent, tablet-first presentation timer. Coming soon.">
+    <meta name="description" content="A silent, tablet-first presentation timer.">
     <meta name="color-scheme" content="light dark">
     <title>Presentation Timer</title>
     <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
   </head>
   <body>
-    <main>
-      <p class="eyebrow">Coming soon</p>
-      <h1>Presentation Timer</h1>
-      <p class="timer" aria-label="Timer preview: 20 minutes">20:00</p>
-      <p>A silent, tablet-first timer to keep your presentation on track.</p>
-      <p class="note">This is a placeholder. Countdown and controls are not available yet.</p>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Presentation Timer home">
+          <span class="brand-mark" aria-hidden="true">PT</span>
+          <span>Presentation Timer</span>
+        </a>
+        <label class="theme-control" for="theme-select">
+          <span>Theme</span>
+          <select id="theme-select" name="theme">
+            <option value="system">System</option>
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+      </header>
+
+      <section class="persistence-notice" id="persistence-notice" aria-live="polite" aria-atomic="false" hidden>
+        <div>
+          <p class="persistence-notice-title">Storage notice</p>
+          <ul id="persistence-notice-list"></ul>
+        </div>
+        <button class="button button-secondary" id="persistence-retry" type="button" hidden>Retry storage</button>
+      </section>
+
+      <div class="workspace">
+        <section class="timer-panel" aria-labelledby="timer-heading">
+          <div class="timer-heading">
+            <p class="eyebrow">Presentation session</p>
+            <h1 id="timer-heading">Make every minute count.</h1>
+          </div>
+          <p class="status" id="session-status" role="status" aria-live="polite" aria-atomic="true">READY</p>
+          <p class="timer-display" id="timer-display" aria-label="Time remaining">20:00</p>
+          <div class="progress-track">
+            <progress id="session-progress" max="100" value="0" aria-label="Session progress"></progress>
+          </div>
+          <div class="timer-controls">
+            <button class="button button-primary" id="primary-action" type="button">Start timer</button>
+            <button class="button button-secondary" id="reset-action" type="button" disabled>Reset</button>
+            <button class="button button-secondary" id="fullscreen-action" type="button" hidden>Enter full screen</button>
+          </div>
+          <p class="capability-status" id="wake-lock-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          <p class="capability-notice" id="fullscreen-notice" role="status" aria-live="polite" aria-atomic="true"></p>
+        </section>
+
+        <section class="duration-panel" aria-labelledby="duration-heading">
+          <div class="panel-heading">
+            <p class="eyebrow">Session settings</p>
+            <h2 id="duration-heading">Total duration</h2>
+          </div>
+          <form id="duration-form" novalidate>
+            <label class="duration-label" for="duration-input">Choose the total time</label>
+            <div class="duration-input-wrap">
+              <input
+                id="duration-input"
+                name="duration"
+                type="number"
+                min="1"
+                max="1440"
+                step="1"
+                inputmode="numeric"
+                value="20"
+                aria-describedby="duration-help duration-error"
+                required
+              >
+              <span aria-hidden="true">min</span>
+            </div>
+            <p class="field-help" id="duration-help">Enter a whole number from 1 to 1,440 minutes.</p>
+            <p class="field-error" id="duration-error" aria-live="polite"></p>
+            <fieldset class="presets">
+              <legend>Quick select</legend>
+              <div class="preset-grid">
+                <button type="button" class="preset-button" data-minutes="5">5 min</button>
+                <button type="button" class="preset-button" data-minutes="10">10 min</button>
+                <button type="button" class="preset-button" data-minutes="15">15 min</button>
+                <button type="button" class="preset-button is-selected" data-minutes="20" aria-pressed="true">20 min</button>
+                <button type="button" class="preset-button" data-minutes="30">30 min</button>
+                <button type="button" class="preset-button" data-minutes="45">45 min</button>
+              </div>
+            </fieldset>
+            <button class="button button-secondary duration-submit" id="duration-submit" type="submit" hidden>Apply total time</button>
+          </form>
+          <p class="duration-note" id="duration-note">Your presentation timer is ready when you are.</p>
+          <button
+            class="button button-secondary warning-settings-action"
+            id="warning-settings-action"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="warning-dialog"
+          >
+            Warning settings
+          </button>
+        </section>
+      </div>
+      <footer class="page-footer">A quiet cue to keep your talk on track.</footer>
     </main>
+
+    <dialog class="confirm-dialog" id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description">
+      <form method="dialog">
+        <p class="eyebrow">Reset session</p>
+        <h2 id="reset-title">Start over?</h2>
+        <p id="reset-description">This will clear the elapsed time and return to setup. Your total duration will stay the same.</p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" value="cancel">Keep session</button>
+          <button class="button button-danger" value="reset">Reset timer</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="confirm-dialog recovery-dialog" id="recovery-dialog" aria-labelledby="recovery-title" aria-describedby="recovery-description">
+      <p class="eyebrow">Session recovery</p>
+      <h2 id="recovery-title">Saved session needs attention</h2>
+      <p id="recovery-description"></p>
+      <div class="dialog-actions recovery-dialog-actions">
+        <button class="button button-secondary" id="recovery-restore" type="button" hidden>Restore checkpoint paused</button>
+        <button class="button button-danger" id="recovery-discard" type="button" hidden>Discard saved session</button>
+        <button class="button button-primary" id="recovery-return" type="button" hidden>Return to setup</button>
+      </div>
+    </dialog>
+
+    <dialog class="confirm-dialog warning-dialog" id="warning-dialog" aria-labelledby="warning-title" aria-describedby="warning-description">
+      <form id="warning-form" novalidate>
+        <p class="eyebrow">Advanced settings</p>
+        <h2 id="warning-title">Warning schedule</h2>
+        <p id="warning-description">Set whole-minute warning thresholds. Countdown values descend; overtime milestones ascend.</p>
+        <div class="warning-groups">
+          <fieldset class="warning-group">
+            <legend>Countdown warnings</legend>
+            <label class="warning-input-label" for="countdown-first">
+              <span>First warning</span>
+              <span class="warning-input-wrap">
+                <input id="countdown-first" type="number" min="1" step="1" inputmode="numeric" required>
+                <span aria-hidden="true">min</span>
+              </span>
+            </label>
+            <label class="warning-input-label" for="countdown-second">
+              <span>Middle warning</span>
+              <span class="warning-input-wrap">
+                <input id="countdown-second" type="number" min="1" step="1" inputmode="numeric" required>
+                <span aria-hidden="true">min</span>
+              </span>
+            </label>
+            <label class="warning-input-label" for="countdown-final">
+              <span>Final warning</span>
+              <span class="warning-input-wrap">
+                <input id="countdown-final" type="number" min="1" step="1" inputmode="numeric" required>
+                <span aria-hidden="true">min</span>
+              </span>
+            </label>
+          </fieldset>
+          <fieldset class="warning-group">
+            <legend>Overtime milestones</legend>
+            <label class="warning-input-label" for="overtime-first">
+              <span>First milestone</span>
+              <span class="warning-input-wrap">
+                <input id="overtime-first" type="number" min="1" step="1" inputmode="numeric" required>
+                <span aria-hidden="true">min</span>
+              </span>
+            </label>
+            <label class="warning-input-label" for="overtime-second">
+              <span>Second milestone</span>
+              <span class="warning-input-wrap">
+                <input id="overtime-second" type="number" min="1" step="1" inputmode="numeric" required>
+                <span aria-hidden="true">min</span>
+              </span>
+            </label>
+            <label class="warning-input-label" for="overtime-third">
+              <span>Third milestone</span>
+              <span class="warning-input-wrap">
+                <input id="overtime-third" type="number" min="1" step="1" inputmode="numeric" required>
+                <span aria-hidden="true">min</span>
+              </span>
+            </label>
+            <label class="warning-input-label" for="overtime-fourth">
+              <span>Fourth milestone</span>
+              <span class="warning-input-wrap">
+                <input id="overtime-fourth" type="number" min="1" step="1" inputmode="numeric" required>
+                <span aria-hidden="true">min</span>
+              </span>
+            </label>
+          </fieldset>
+        </div>
+        <p class="field-error warning-error" id="warning-error" role="status" aria-live="polite"></p>
+        <div class="dialog-actions warning-dialog-actions">
+          <button class="button button-secondary" id="warning-defaults" type="button">Restore defaults</button>
+          <span class="dialog-action-spacer"></span>
+          <button class="button button-secondary" id="warning-cancel" type="button">Cancel</button>
+          <button class="button button-primary" type="submit">Apply warnings</button>
+        </div>
+      </form>
+    </dialog>
   </body>
 </html>
