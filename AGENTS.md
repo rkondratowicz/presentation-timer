@@ -2,7 +2,7 @@
 
 ## Product and Constraints
 
-Read [spec.md](./spec.md) before changing behavior. It is the source of truth for features and acceptance criteria; this file governs implementation.
+Read [README.md](./README.md) before changing behavior. It documents supported behavior and manual validation; this file governs implementation.
 
 - Build a small, dependable browser app, not a platform.
 - Use semantic HTML, CSS, and vanilla JavaScript ES modules.
@@ -21,11 +21,11 @@ Read [spec.md](./spec.md) before changing behavior. It is the source of truth fo
 - Use descriptive names, consistent units (`Ms` for milliseconds), `const` by default, and strict comparisons.
 - Add concise JSDoc only where data shapes, units, or contracts need clarification. Comment why, not what the code already says.
 - Do not add speculative abstractions, generic event buses, custom component systems, or configuration for hypothetical features.
-- Follow existing conventions, keep changes focused, and preserve unrelated work. Update the spec when agreed behavior changes.
+- Follow existing conventions, keep changes focused, and preserve unrelated work. Update the README when agreed behavior changes.
 
 ## Timing and Browser Reliability
 
-- Follow the spec's elapsed-time model. Refresh callbacks are not clocks; never decrement a counter on each tick.
+- Follow the README's elapsed-time model. Refresh callbacks are not clocks; never decrement a counter on each tick.
 - Keep full precision internally and round only for display.
 - Make rendering safe to repeat; it must not start timers, register listeners, save state, or request browser capabilities.
 - Own and clean up intervals, listeners, and wake-lock handles. Repeated start/reset cycles must not accumulate work.
@@ -49,7 +49,7 @@ Read [spec.md](./spec.md) before changing behavior. It is the source of truth fo
 
 - No automated test suite or test-runner dependencies. Use manual browser checks and interactive browser tools.
 - After functional changes, exercise the changed behavior and adjacent transitions in a real browser. Check for console errors.
-- Use the checklist in [spec.md](./spec.md) for complete validation; pay special attention to exact deadline boundaries, pause/resume, duration edits, and recovery.
+- Use the checklist in [README.md](./README.md#manual-browser-validation) for complete validation; pay special attention to exact deadline boundaries, pause/resume, duration edits, and recovery.
 - Check responsive layouts, keyboard behavior, themes, and failure paths when affected.
 - Validate responsive layouts in portrait and landscape using browser viewport resizing or emulation. Actual iPad Safari testing is not required; do not claim desktop checks verify device-specific behavior.
 - Never claim checks passed unless performed. Report what was checked, what remains unverified, and any device/tool limitations.

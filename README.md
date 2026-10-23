@@ -7,8 +7,9 @@ stored locally in this browser; there is no account or backend.
 
 ## Use the timer
 
-- Choose a preset or enter a whole number of minutes from 1 to 1,440, then
-  select **Start timer**.
+- Choose a 5, 10, 15, 20, 30, or 45 minute preset or enter a whole number of
+  minutes from 1 to 1,440, then select **Start timer**. The default is 20 minutes;
+  invalid input disables Start and shows an explanation.
 - **Pause timer** freezes elapsed time and warnings. Resume continues from that
   exact point; paused time never counts.
 - Change the duration to set a new total, not to add time. The timer recomputes
@@ -21,6 +22,24 @@ stored locally in this browser; there is no account or backend.
   1 minute remaining, then 1, 3, 5, and 10 minutes overtime.
 - Choose **System**, **Light**, or **Dark** for the theme. Warnings use text as
   well as color and do not use sound or vibration.
+
+## Timing and warnings
+
+Live timing uses elapsed `performance.now()` timestamps, not a count of refresh
+callbacks. Pause freezes the exact elapsed time; resume excludes the paused
+interval. Extending the total duration beyond elapsed time returns an overtime
+session to countdown.
+
+The display uses `MM:SS` below one hour and `H:MM:SS` at or above one hour.
+Positive remaining time rounds up so zero is never shown before the deadline.
+At the deadline, the display shows `+00:00` and **TIME'S UP**; after one full
+overtime second it shows `+00:01`. Progress caps at 100% in overtime.
+
+Countdown thresholds greater than the total duration are skipped. Warnings
+advance to the highest applicable level, including immediately after returning
+from the background, without replaying intermediate warnings. Duration and
+warning-setting changes recompute the level and labels using the configured
+thresholds. Warnings must not flash or shift the timer and controls.
 
 ## Screen and browser controls
 
@@ -76,12 +95,29 @@ time.
 
 ## Manual browser validation
 
-There is no automated test suite or build step. Validate timer boundaries,
-pause/resume, warning settings, reset and duration changes, reload/background
-recovery, capability availability/failure, keyboard operation, and responsive
-layouts in portrait and landscape before deployment. Browser viewport
-emulation is useful for layout checks but does not verify device-specific
-behavior such as iPad Safari.
+There is no automated test suite or build step. Before deployment, check:
+
+- Default, preset, custom, and invalid durations; saved preferences; all themes.
+- Countdown rounding, the exact deadline transition, and countdown/overtime
+  formatting below and above one hour.
+- Pause/resume before and after the deadline, with no elapsed-time or warning
+  advancement while paused.
+- Reset confirmation and cancellation; duration changes during countdown,
+  overtime, and pause.
+- Default/custom warning thresholds, invalid settings, thresholds skipped for
+  short sessions, and multiple thresholds crossed while backgrounded.
+- Background/return, reload recovery for active and paused sessions, and
+  back-forward navigation; invalid checkpoints and storage failures.
+- Wake-lock/full-screen availability, success, denial, and release.
+- Keyboard operation, visible focus, and focus restoration after dialogs.
+- Phone, tablet, and desktop layouts in portrait and landscape: readable
+  digits, visible controls, no horizontal overflow or clipping, and warnings
+  that do not disrupt the layout. Tablet timer views should need no scrolling.
+  Orientation and full-screen changes must preserve the session.
+
+Record what was checked and what remains unverified. Browser viewport emulation
+is useful for layout checks but does not verify device-specific behavior such
+as iPad Safari; actual iPad testing is not required.
 
 ## GitHub Pages
 
