@@ -145,9 +145,11 @@ body {
 }
 
 .theme-control {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.55rem;
+  margin-top: 1rem;
   color: var(--muted);
   font-size: 0.88rem;
   font-weight: 650;
@@ -502,6 +504,24 @@ progress::-moz-progress-bar {
 
 .duration-panel {
   padding: clamp(1.2rem, 3vh, 2rem);
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.settings-action {
+  min-width: 3rem;
+  min-height: 3rem;
+  padding: 0.65rem;
+}
+
+.settings-close-action {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.8rem;
 }
 
 .panel-heading h2 {
@@ -1075,16 +1095,76 @@ a:focus-visible {
     font-size: 0.82rem;
   }
 
-  .theme-control > span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
-
   .timer-display {
     font-size: clamp(3.2rem, 15vw, 4.2rem);
+  }
+}
+
+:root[data-session-active="true"] .workspace {
+  grid-template-columns: minmax(0, 1fr);
+  align-content: stretch;
+  align-items: stretch;
+}
+
+:root[data-session-active="true"] .timer-panel {
+  min-height: 0;
+  container-type: inline-size;
+}
+
+:root[data-session-active="true"] .timer-heading,
+:root[data-session-active="true"] .page-footer {
+  display: none;
+}
+
+:root[data-session-active="true"] .status {
+  margin-top: 0;
+}
+
+:root[data-session-active="true"] .timer-display {
+  font-size: min(calc(170cqw / var(--timer-characters)), 32svh, 15rem);
+}
+
+:root[data-session-active="true"] .duration-panel {
+  position: fixed;
+  z-index: 2;
+  top: calc(max(1rem, env(safe-area-inset-top)) + 4.25rem);
+  right: max(1rem, env(safe-area-inset-right), calc((100vw - 78rem) / 2));
+  width: min(calc(100% - 2rem), 24rem);
+  max-height: calc(100svh - max(1rem, env(safe-area-inset-top)) - max(1rem, env(safe-area-inset-bottom)) - 4.25rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-shadow: 0 1rem 4rem rgb(0 0 0 / 25%);
+}
+
+@media (max-height: 520px) {
+  :root[data-session-active="true"] .topbar {
+    min-height: 3rem;
+  }
+
+  :root[data-session-active="true"] .workspace {
+    padding: 0.4rem 0;
+  }
+
+  :root[data-session-active="true"] .timer-panel {
+    padding: 0.5rem 1rem;
+  }
+
+  :root[data-session-active="true"] .status {
+    height: 2rem;
+  }
+
+  :root[data-session-active="true"] .timer-display {
+    margin: 0;
+    font-size: max(1.5rem, min(calc(170cqw / var(--timer-characters)), 27svh, calc((100svh - 16rem) / 1.15)));
+  }
+
+  :root[data-session-active="true"] .progress-track {
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  :root[data-session-active="true"] .timer-controls .button {
+    min-height: 2.75rem;
+    padding: 0.5rem 0.65rem;
   }
 }
 

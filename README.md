@@ -10,6 +10,11 @@ stored locally in this browser; there is no account or backend.
 - Choose a 5, 10, 15, 20, 30, or 45 minute preset or enter a whole number of
   minutes from 1 to 1,440, then select **Start timer**. The default is 20 minutes;
   invalid input disables Start and shows an explanation.
+- Starting a session hides settings and gives the timer the full workspace.
+  Settings stay hidden when paused or recovering a saved session. Use the
+  top-right burger menu to edit duration, warnings, or theme without pausing
+  the timer. Select **Done**, press **Escape**, or click outside to close
+  settings. Reset returns to the visible setup settings.
 - **Pause timer** freezes elapsed time and warnings. Resume continues from that
   exact point; paused time never counts.
 - Change the duration to set a new total, not to add time. The timer recomputes
@@ -110,6 +115,9 @@ There is no automated test suite or build step. Before deployment, check:
   back-forward navigation; invalid checkpoints and storage failures.
 - Wake-lock/full-screen availability, success, denial, and release.
 - Keyboard operation, visible focus, and focus restoration after dialogs.
+- Settings hide on start and reload of active/paused sessions; the burger
+  menu reopens them without shrinking the timer. Check Done, Escape, outside
+  clicks, warning-dialog focus restoration, and visible settings after reset.
 - Phone, tablet, and desktop layouts in portrait and landscape: readable
   digits, visible controls, no horizontal overflow or clipping, and warnings
   that do not disrupt the layout. Tablet timer views should need no scrolling.

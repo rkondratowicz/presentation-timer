@@ -33,6 +33,9 @@ import {
 
 const root = document.documentElement;
 const timerPanel = document.querySelector(".timer-panel");
+const settingsPanel = document.querySelector("#settings-panel");
+const settingsAction = document.querySelector("#settings-action");
+const settingsCloseAction = document.querySelector("#settings-close-action");
 const statusElement = document.querySelector("#session-status");
 const timerElement = document.querySelector("#timer-display");
 const progressElement = document.querySelector("#session-progress");
@@ -70,6 +73,7 @@ let refreshIntervalId = null;
 let resetTrigger = null;
 let warningSettingsTrigger = null;
 let durationWasTouched = false;
+let settingsAreOpen = false;
 let storage = null;
 let sessionWritesBlocked = false;
 let preferencesWritesBlocked = false;
@@ -427,11 +431,29 @@ function updatePresetSelection() {
   }
 }
 
+function renderSettings() {
+  const isSetup = session.phase === "setup";
+  root.dataset.sessionActive = String(!isSetup);
+  settingsPanel.hidden = !isSetup && !settingsAreOpen;
+  settingsAction.hidden = isSetup;
+  settingsCloseAction.hidden = isSetup;
+  settingsAction.setAttribute("aria-expanded", String(settingsAreOpen));
+  settingsAction.setAttribute("aria-label", settingsAreOpen ? "Close settings" : "Open settings");
+}
+
+function setSettingsOpen(isOpen, { restoreFocus = false } = {}) {
+  settingsAreOpen = isOpen;
+  renderSettings();
+  if (isOpen) durationInput.focus({ preventScroll: true });
+  else if (restoreFocus) settingsAction.focus({ preventScroll: true });
+}
+
 function render(nowMs = performance.now(), { syncDurationField = false } = {}) {
   session = synchronizePhase(session, nowMs);
   const display = getTimerDisplay(session, nowMs);
   const warning = getWarningDisplay(session, nowMs, preferences.warnings);
   timerElement.textContent = display.timeText;
+  timerElement.style.setProperty("--timer-characters", String(display.timeText.length));
   if (statusElement.textContent !== warning.statusText) {
     statusElement.textContent = warning.statusText;
   }
@@ -456,6 +478,7 @@ function render(nowMs = performance.now(), { syncDurationField = false } = {}) {
       : "Changes update the total time; paused time never counts.";
 
   if (syncDurationField) durationInput.value = String(session.durationMs / MINUTE_MS);
+  renderSettings();
   updatePresetSelection();
   updateDurationFieldError();
   updateRefreshInterval();
@@ -508,7 +531,30 @@ function startFromSetup(nowMs) {
   durationWritesBlocked = false;
   persistDuration();
   persistSessionCheckpoint(nowMs);
+  primaryAction.focus({ preventScroll: true });
 }
+
+settingsAction.addEventListener("click", () => {
+  setSettingsOpen(!settingsAreOpen);
+});
+
+settingsCloseAction.addEventListener("click", () => {
+  setSettingsOpen(false, { restoreFocus: true });
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && settingsAreOpen && !event.defaultPrevented
+    && !warningDialog.open && !resetDialog.open && !recoveryDialog.open) {
+    event.preventDefault();
+    setSettingsOpen(false, { restoreFocus: true });
+  }
+});
+
+document.addEventListener("pointerdown", (event) => {
+  if (!settingsAreOpen || settingsPanel.contains(event.target) || settingsAction.contains(event.target)
+    || warningDialog.open || resetDialog.open || recoveryDialog.open) return;
+  setSettingsOpen(false, { restoreFocus: settingsPanel.contains(document.activeElement) });
+});
 
 primaryAction.addEventListener("click", () => {
   const nowMs = performance.now();
@@ -536,6 +582,7 @@ resetDialog.addEventListener("close", () => {
   if (resetDialog.returnValue === "reset") {
     session = resetSession(session);
     durationWasTouched = false;
+    settingsAreOpen = false;
     render(performance.now(), { syncDurationField: true });
     syncWakeLockForSession();
     durationWritesBlocked = false;
