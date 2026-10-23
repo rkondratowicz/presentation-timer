@@ -51,7 +51,7 @@ Read [spec.md](./spec.md) before changing behavior. It is the source of truth fo
 - After functional changes, exercise the changed behavior and adjacent transitions in a real browser. Check for console errors.
 - Use the checklist in [spec.md](./spec.md) for complete validation; pay special attention to exact deadline boundaries, pause/resume, duration edits, and recovery.
 - Check responsive layouts, keyboard behavior, themes, and failure paths when affected.
-- Actual iPad Safari validation is required for device-specific behavior. Desktop WebKit or emulation is not equivalent.
+- Validate responsive layouts in portrait and landscape using browser viewport resizing or emulation. Actual iPad Safari testing is not required; do not claim desktop checks verify device-specific behavior.
 - Never claim checks passed unless performed. Report what was checked, what remains unverified, and any device/tool limitations.
 - Do not leave temporary files or validation-only processes behind. Summarize the changes and validation concisely.
 

@@ -23,6 +23,7 @@ A silent, tablet-first web timer: enter a duration, start a countdown, see incre
 ## Timer View and Controls
 
 - Large, centered digits, an always-visible status label, and touch-friendly controls.
+- Responsive layouts must work in both portrait and landscape across phone, tablet, and desktop viewports, without horizontal overflow or clipped controls.
 - Portrait and landscape tablet layouts require no scrolling. Settings must not obscure the timer.
 - Progress represents elapsed time, capped at 100% during overtime.
 - Pause/resume is primary; reset is secondary.
@@ -66,7 +67,7 @@ Default warning schedule:
 - Skip countdown thresholds greater than the total duration.
 - Retain reached urgency until reset or a duration/threshold change.
 - After backgrounding, apply the highest applicable warning immediately; do not replay intermediate warnings.
-- Allow configuration of the three countdown thresholds and four overtime milestones. Countdown thresholds must be positive and strictly descending; overtime milestones positive, unique, and ascending. Reject invalid settings with an explanation.
+- Allow configuration of the three countdown thresholds and four overtime milestones in whole minutes only. Countdown thresholds must be positive and strictly descending; overtime milestones positive, unique, and ascending. Reject invalid settings with an explanation.
 - Recompute warnings after duration/threshold changes without replaying earlier effects. Labels must reflect configured thresholds rather than hard-coded defaults.
 
 ## Timing and Recovery
@@ -76,7 +77,8 @@ Default warning schedule:
 - Refresh immediately on return to visibility and on `pageshow`, including back-forward cache restoration. Do not rely on background callbacks.
 - Persist session state with a wall-clock checkpoint for reload/process-termination recovery. Never reuse a monotonic timestamp across reloads.
 - Restore paused sessions without adding elapsed time; reconcile active sessions with time passed since the checkpoint.
-- If recovery is uncertain, offer a clear recovery choice rather than silently resetting.
+- If recovery is uncertain but a trustworthy elapsed-time checkpoint exists, offer to restore that elapsed time as paused or discard the session. Do not silently reset or add uncertain elapsed time.
+- If saved session data is invalid or corrupt, explain the problem and allow returning to setup rather than attempting an unsafe restoration.
 - Device clock changes must not affect live timing; document that they can affect recovery after reload.
 - Surface persistence failures without stopping the timer.
 
@@ -96,8 +98,8 @@ The implementation assistant manually checks behavior in the browser, using inte
 - [ ] Reset confirmation and duration changes during countdown, overtime, and pause.
 - [ ] Default/custom thresholds, skipped thresholds, and multiple thresholds crossed while backgrounded.
 - [ ] Background/return, reload recovery, and back-forward navigation.
-- [ ] Portrait/landscape layouts, readable digits, visible controls, and non-disruptive warnings.
+- [ ] Responsive phone, tablet, and desktop layouts in portrait and landscape: readable digits, visible controls, no horizontal overflow or clipping, and non-disruptive warnings. Tablet timer views require no scrolling.
+- [ ] Switching between portrait and landscape preserves the session and keeps the timer and controls usable.
 - [ ] Wake-lock/full-screen success, denial, release, and unsupported behavior.
-- [ ] On actual iPad Safari: backgrounding, rotation, screen locking, and recovery.
 
-Record results and unverified scenarios. Desktop checks do not replace actual iPad validation; device access is required.
+Record results and unverified scenarios. Browser viewport resizing or emulation is sufficient for responsive layout checks; actual iPad Safari testing is not required. Do not claim device-specific behavior was verified through desktop checks.
