@@ -7,17 +7,20 @@ stored locally in this browser; there is no account or backend.
 
 ## Use the timer
 
-- Choose a 5, 10, 15, 20, 30, or 45 minute preset or enter a whole number of
-  minutes from 1 to 1,440, then select **Start timer**. The default is 20 minutes;
-  invalid input disables Start and shows an explanation.
-- Starting a session hides settings and turns the whole screen into the timer:
+- The ready screen shows the timer at full size, matching the active session.
+  Use the top-right burger menu to choose a 5, 10, 15, 20, 30, or 45 minute
+  preset, enter a whole number of minutes from 1 to 1,440, or edit warnings and
+  theme. The default duration is 20 minutes; invalid input disables Start and
+  shows an explanation. Select **Done**, press **Escape**, or click outside to
+  close settings and return to the ready clock before starting.
+- Starting a session closes settings and keeps the whole screen as the timer:
   a large status line, digits sized to fill the available width or height, a
   compact row of presenter controls, and a full-width progress bar along the
-  bottom edge. Warning colors fill the whole screen. Settings stay hidden when
-  paused or recovering a saved session. Use the top-right burger menu to edit
-  duration, warnings, or theme without pausing the timer. Select **Done**,
-  press **Escape**, or click outside to close settings. Reset returns to the
-  visible setup settings.
+  bottom edge. Warning colors fill the whole screen. Settings stay hidden in
+  setup and while paused or recovering a saved session. Open the burger menu
+  to edit settings without pausing the timer. Select **Done**, press **Escape**,
+  or click outside to close settings. Reset returns to the ready screen with
+  settings hidden.
 - **Pause timer** freezes elapsed time and warnings. Resume continues from that
   exact point; paused time never counts.
 - Change the duration to set a new total, not to add time. The timer recomputes
@@ -119,9 +122,10 @@ There is no automated test suite or build step. Before deployment, check:
   back-forward navigation; invalid checkpoints and storage failures.
 - Wake-lock/full-screen availability, success, denial, and release.
 - Keyboard operation, visible focus, and focus restoration after dialogs.
-- Settings hide on start and reload of active/paused sessions; the burger
-  menu reopens them without shrinking the timer. Check Done, Escape, outside
-  clicks, warning-dialog focus restoration, and visible settings after reset.
+- Settings start hidden on the ready screen and stay hidden on start or reload
+  of active/paused sessions; the burger menu opens them without shrinking the
+  timer. Check Done, Escape, outside clicks, warning-dialog focus restoration,
+  and hidden settings after reset.
 - Phone, tablet, and desktop layouts in portrait and landscape: readable
   digits that fill the session view for `MM:SS`, `+MM:SS`, and `H:MM:SS`,
   visible controls, no horizontal overflow or clipping, and warnings that do

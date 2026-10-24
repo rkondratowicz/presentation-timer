@@ -436,9 +436,10 @@ function updatePresetSelection() {
 function renderSettings() {
   const isSetup = session.phase === "setup";
   root.dataset.sessionActive = String(!isSetup);
-  settingsPanel.hidden = !isSetup && !settingsAreOpen;
-  settingsAction.hidden = isSetup;
-  settingsCloseAction.hidden = isSetup;
+  root.dataset.timerView = "true";
+  settingsPanel.hidden = !settingsAreOpen;
+  settingsAction.hidden = false;
+  settingsCloseAction.hidden = !settingsAreOpen;
   settingsAction.setAttribute("aria-expanded", String(settingsAreOpen));
   settingsAction.setAttribute("aria-label", settingsAreOpen ? "Close settings" : "Open settings");
 }
@@ -526,6 +527,7 @@ function applyDuration(durationMs, nowMs) {
 function startFromSetup(nowMs) {
   const durationMs = getInputDurationMs();
   if (durationMs === null) return;
+  settingsAreOpen = false;
   session = changeDuration(session, durationMs, nowMs);
   session = startSession(session, nowMs);
   render(nowMs, { syncDurationField: true });

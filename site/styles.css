@@ -1040,19 +1040,19 @@ a:focus-visible {
   }
 }
 
-/* Active session: the timer fills the viewport; presenter controls stay small. */
-:root[data-session-active="true"] body {
+/* The timer fills the viewport in setup and throughout the session. */
+:root[data-timer-view="true"] body {
   padding: 0;
 }
 
-:root[data-session-active="true"] .app-shell {
+:root[data-timer-view="true"] .app-shell {
   width: 100%;
   height: 100svh;
   height: 100dvh;
   min-height: 0;
 }
 
-:root[data-session-active="true"] .topbar {
+:root[data-timer-view="true"] .topbar {
   position: fixed;
   z-index: 3;
   top: max(0.75rem, env(safe-area-inset-top));
@@ -1060,11 +1060,11 @@ a:focus-visible {
   min-height: 0;
 }
 
-:root[data-session-active="true"] .brand {
+:root[data-timer-view="true"] .brand {
   display: none;
 }
 
-:root[data-session-active="true"] .persistence-notice {
+:root[data-timer-view="true"] .persistence-notice {
   margin:
     max(0.75rem, env(safe-area-inset-top))
     calc(max(0.75rem, env(safe-area-inset-right)) + 3.75rem)
@@ -1072,7 +1072,7 @@ a:focus-visible {
     max(0.75rem, env(safe-area-inset-left));
 }
 
-:root[data-session-active="true"] .workspace {
+:root[data-timer-view="true"] .workspace {
   min-height: 0;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr);
@@ -1082,7 +1082,7 @@ a:focus-visible {
   padding: 0;
 }
 
-:root[data-session-active="true"] .timer-panel {
+:root[data-timer-view="true"] .timer-panel {
   min-height: 0;
   justify-content: flex-start;
   gap: clamp(0.4rem, 1.5svh, 1rem);
@@ -1097,7 +1097,7 @@ a:focus-visible {
   container-type: inline-size;
 }
 
-:root[data-session-active="true"] .timer-panel .status {
+:root[data-timer-view="true"] .timer-panel .status {
   width: 100%;
   height: auto;
   min-height: 1.15em;
@@ -1110,7 +1110,7 @@ a:focus-visible {
   line-height: 1.15;
 }
 
-:root[data-session-active="true"] .timer-display-frame {
+:root[data-timer-view="true"] .timer-display-frame {
   display: grid;
   min-height: 0;
   flex: 1 1 0;
@@ -1123,21 +1123,21 @@ a:focus-visible {
 /* Digits have no descenders, so a tight line box keeps them centred while the
    size follows whichever of width or height runs out first. The right margin
    balances the trailing negative letter-spacing so the digits look centred. */
-:root[data-session-active="true"] .timer-display {
+:root[data-timer-view="true"] .timer-display {
   width: auto;
   margin: 0 0.07em 0 0;
   font-size: min(calc(185cqw / var(--timer-characters)), 125cqh);
   line-height: 0.8;
 }
 
-:root[data-session-active="true"] .timer-controls {
+:root[data-timer-view="true"] .timer-controls {
   width: auto;
   max-width: 100%;
   justify-content: center;
   gap: 0.5rem;
 }
 
-:root[data-session-active="true"] .timer-controls .button {
+:root[data-timer-view="true"] .timer-controls .button {
   min-width: 0;
   min-height: 2.75rem;
   flex: 0 1 auto;
@@ -1149,20 +1149,20 @@ a:focus-visible {
   font-weight: 700;
 }
 
-:root[data-session-active="true"] .timer-controls .button:hover:not(:disabled) {
+:root[data-timer-view="true"] .timer-controls .button:hover:not(:disabled) {
   background: color-mix(in srgb, currentColor 10%, transparent);
 }
 
-:root[data-session-active="true"] .capability-summary {
+:root[data-timer-view="true"] .capability-summary {
   flex-basis: auto;
 }
 
-:root[data-session-active="true"] .capability-notice {
+:root[data-timer-view="true"] .capability-notice {
   width: auto;
   margin: 0;
 }
 
-:root[data-session-active="true"] .progress-track {
+:root[data-timer-view="true"] .progress-track {
   order: 1;
   align-self: stretch;
   width: auto;
@@ -1176,7 +1176,7 @@ a:focus-visible {
   border-radius: 0;
 }
 
-:root[data-session-active="true"] .duration-panel {
+:root[data-timer-view="true"] .duration-panel {
   position: fixed;
   z-index: 2;
   top: calc(max(0.75rem, env(safe-area-inset-top)) + 3.75rem);
@@ -1186,6 +1186,24 @@ a:focus-visible {
   overflow-y: auto;
   overscroll-behavior: contain;
   box-shadow: 0 1rem 4rem rgb(0 0 0 / 25%);
+}
+
+:root[data-session-active="false"] .timer-controls #reset-action {
+  display: none;
+}
+
+:root[data-session-active="false"] .timer-controls .button-primary {
+  min-height: 3.25rem;
+  padding-right: 1.4rem;
+  padding-left: 1.4rem;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--button-foreground);
+  font-size: 1.05rem;
+}
+
+:root[data-session-active="false"] .timer-controls .button-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {
