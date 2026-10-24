@@ -28,15 +28,15 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page: #101915;
-  --surface: #1b2821;
-  --surface-raised: #24342b;
+  --page: #000000;
+  --surface: #000000;
+  --surface-raised: #141414;
   --foreground: #edf6f0;
-  --muted: #b0c4b8;
-  --line: #3a5044;
+  --muted: #b8b8b8;
+  --line: #393939;
   --accent: #8be0ad;
   --accent-strong: #a1edbf;
-  --accent-soft: #223c2c;
+  --accent-soft: #1e1e1e;
   --danger: #ff989b;
   --danger-foreground: #2e1518;
   --danger-soft: #422326;
@@ -54,15 +54,15 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --page: #101915;
-    --surface: #1b2821;
-    --surface-raised: #24342b;
+    --page: #000000;
+    --surface: #000000;
+    --surface-raised: #141414;
     --foreground: #edf6f0;
-    --muted: #b0c4b8;
-    --line: #3a5044;
+    --muted: #b8b8b8;
+    --line: #393939;
     --accent: #8be0ad;
     --accent-strong: #a1edbf;
-    --accent-soft: #223c2c;
+    --accent-soft: #1e1e1e;
     --danger: #ff989b;
     --danger-foreground: #2e1518;
     --danger-soft: #422326;
@@ -99,9 +99,7 @@ body {
     max(1rem, env(safe-area-inset-right))
     max(0.875rem, env(safe-area-inset-bottom))
     max(1rem, env(safe-area-inset-left));
-  background:
-    radial-gradient(ellipse at 50% 0%, rgb(74 137 104 / 9%), transparent 42rem),
-    var(--page);
+  background: var(--page);
   color: var(--foreground);
 }
 
@@ -722,7 +720,7 @@ progress::-moz-progress-bar {
 }
 
 .confirm-dialog::backdrop {
-  background: rgb(7 17 12 / 58%);
+  background: rgb(0 0 0 / 58%);
   backdrop-filter: blur(3px);
 }
 
