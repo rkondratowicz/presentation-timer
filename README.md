@@ -10,11 +10,14 @@ stored locally in this browser; there is no account or backend.
 - Choose a 5, 10, 15, 20, 30, or 45 minute preset or enter a whole number of
   minutes from 1 to 1,440, then select **Start timer**. The default is 20 minutes;
   invalid input disables Start and shows an explanation.
-- Starting a session hides settings and gives the timer the full workspace.
-  Settings stay hidden when paused or recovering a saved session. Use the
-  top-right burger menu to edit duration, warnings, or theme without pausing
-  the timer. Select **Done**, press **Escape**, or click outside to close
-  settings. Reset returns to the visible setup settings.
+- Starting a session hides settings and turns the whole screen into the timer:
+  a large status line, digits sized to fill the available width or height, a
+  compact row of presenter controls, and a full-width progress bar along the
+  bottom edge. Warning colors fill the whole screen. Settings stay hidden when
+  paused or recovering a saved session. Use the top-right burger menu to edit
+  duration, warnings, or theme without pausing the timer. Select **Done**,
+  press **Escape**, or click outside to close settings. Reset returns to the
+  visible setup settings.
 - **Pause timer** freezes elapsed time and warnings. Resume continues from that
   exact point; paused time never counts.
 - Change the duration to set a new total, not to add time. The timer recomputes
@@ -52,7 +55,8 @@ While the timer is active, the app requests the Screen Wake Lock where the
 browser supports it. It releases the lock when paused, reset, hidden, or when
 the page is being left, then requests it again on return while the timer is
 active. A denial, unsupported browser, or unexpected release does not stop the
-timer; the app says the device may sleep. Pause and resume to retry after a
+timer; the app shows **Screen may sleep** beside the session controls, with the
+full reason in the settings panel. Pause and resume to retry after a
 denial or unexpected release. Browser power policies can still dim or lock a
 device.
 
@@ -119,8 +123,9 @@ There is no automated test suite or build step. Before deployment, check:
   menu reopens them without shrinking the timer. Check Done, Escape, outside
   clicks, warning-dialog focus restoration, and visible settings after reset.
 - Phone, tablet, and desktop layouts in portrait and landscape: readable
-  digits, visible controls, no horizontal overflow or clipping, and warnings
-  that do not disrupt the layout. Tablet timer views should need no scrolling.
+  digits that fill the session view for `MM:SS`, `+MM:SS`, and `H:MM:SS`,
+  visible controls, no horizontal overflow or clipping, and warnings that do
+  not disrupt the layout. Tablet timer views should need no scrolling.
   Orientation and full-screen changes must preserve the session.
 
 Record what was checked and what remains unverified. Browser viewport emulation

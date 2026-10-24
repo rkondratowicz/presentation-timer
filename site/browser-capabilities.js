@@ -64,9 +64,21 @@ export function createBrowserCapabilities({
     return "";
   }
 
+  /** Short label for the session view; the full message explains the cause. */
+  function getWakeLockSummary() {
+    if (!pageVisible) return "";
+    if (wakeStatus === "release-failed") return "Screen may stay awake";
+    if (!wakeWanted) return "";
+    if (wakeStatus === "unsupported" || wakeStatus === "failed" || wakeStatus === "released") {
+      return "Screen may sleep";
+    }
+    return "";
+  }
+
   function snapshot() {
     return {
       wakeLockMessage: getWakeLockMessage(),
+      wakeLockSummary: getWakeLockSummary(),
       fullscreenSupported,
       fullscreenActive: Boolean(documentObject.fullscreenElement),
       fullscreenPending,

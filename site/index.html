@@ -41,12 +41,11 @@
 
       <div class="workspace">
         <section class="timer-panel" aria-labelledby="timer-heading">
-          <div class="timer-heading">
-            <p class="eyebrow">Presentation session</p>
-            <h1 id="timer-heading">Make every minute count.</h1>
-          </div>
+          <h1 class="visually-hidden" id="timer-heading">Timer</h1>
           <p class="status" id="session-status" role="status" aria-live="polite" aria-atomic="true">READY</p>
-          <p class="timer-display" id="timer-display" aria-label="Time remaining">20:00</p>
+          <div class="timer-display-frame">
+            <p class="timer-display" id="timer-display" aria-label="Time remaining">20:00</p>
+          </div>
           <div class="progress-track">
             <progress id="session-progress" max="100" value="0" aria-label="Session progress"></progress>
           </div>
@@ -54,8 +53,8 @@
             <button class="button button-primary" id="primary-action" type="button">Start timer</button>
             <button class="button button-secondary" id="reset-action" type="button" disabled>Reset</button>
             <button class="button button-secondary" id="fullscreen-action" type="button" hidden>Enter full screen</button>
+            <p class="capability-summary" id="wake-lock-summary" role="status" aria-live="polite" aria-atomic="true"></p>
           </div>
-          <p class="capability-status" id="wake-lock-status" role="status" aria-live="polite" aria-atomic="true"></p>
           <p class="capability-notice" id="fullscreen-notice" role="status" aria-live="polite" aria-atomic="true"></p>
         </section>
 
@@ -117,9 +116,9 @@
               <option value="light">Light</option>
             </select>
           </label>
+          <p class="capability-detail" id="wake-lock-detail"></p>
         </section>
       </div>
-      <footer class="page-footer">A quiet cue to keep your talk on track.</footer>
     </main>
 
     <dialog class="confirm-dialog" id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description">

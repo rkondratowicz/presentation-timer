@@ -215,120 +215,81 @@ body {
 }
 
 .timer-panel {
+  --panel-bg: var(--surface);
+  --panel-border: var(--line);
+  --panel-fg: var(--foreground);
+  --time-fg: var(--accent-strong);
+  --time-weight: 720;
+  --progress-track: var(--surface-raised);
+  --progress-fill: var(--accent);
+  --meta-fg: var(--muted);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: clamp(1.35rem, 4vh, 2.5rem) clamp(1rem, 4vw, 2.75rem);
+  border-color: var(--panel-border);
+  background: var(--panel-bg);
+  color: var(--panel-fg);
   text-align: center;
   transition: background-color 180ms ease, border-color 180ms ease;
 }
 
 .timer-panel[data-overtime="true"] {
-  border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
-  background: var(--danger-soft);
+  --panel-border: color-mix(in srgb, var(--danger) 45%, var(--line));
+  --panel-bg: var(--danger-soft);
+  --time-fg: var(--danger);
+  --progress-fill: var(--danger);
 }
 
-.timer-panel[data-warning="countdown-1"] {
-  border-color: var(--warning-accent);
-}
-
-.timer-panel[data-warning="countdown-1"] .timer-display {
-  color: var(--warning-accent);
-  font-weight: 780;
+.timer-panel[data-warning^="countdown-"] {
+  --panel-border: var(--warning-accent);
+  --time-fg: var(--warning-accent);
+  --time-weight: 780;
+  --progress-fill: var(--warning-accent);
 }
 
 .timer-panel[data-warning="countdown-2"] {
-  border-color: var(--warning-accent);
-  background: var(--warning-panel);
-}
-
-.timer-panel[data-warning="countdown-2"] .timer-display {
-  color: var(--warning-ink);
-  font-weight: 780;
+  --panel-bg: var(--warning-panel);
+  --time-fg: var(--warning-ink);
 }
 
 .timer-panel[data-warning="countdown-3"] {
-  border-color: var(--warning-accent);
-  background: var(--warning-accent);
-  color: var(--warning-accent-foreground);
+  --panel-bg: var(--warning-accent);
+  --panel-fg: var(--warning-accent-foreground);
+  --time-fg: var(--warning-accent-foreground);
+  --time-weight: 800;
+  --progress-track: color-mix(in srgb, var(--warning-accent-foreground) 28%, transparent);
+  --progress-fill: var(--warning-accent-foreground);
+  --meta-fg: var(--warning-accent-foreground);
 }
 
-.timer-panel[data-warning="countdown-3"] .eyebrow,
-.timer-panel[data-warning="countdown-3"] .timer-heading h1,
-.timer-panel[data-warning="countdown-3"] .timer-display {
-  color: var(--warning-accent-foreground);
-}
-
-.timer-panel[data-warning="countdown-3"] .timer-display {
-  font-weight: 800;
-}
-
-.timer-panel[data-warning^="countdown-"] .status {
-  background: var(--warning-accent);
-  color: var(--warning-accent-foreground);
-}
-
-.timer-panel[data-warning="countdown-3"] .status {
-  background: var(--warning-strong);
-  color: var(--warning-strong-foreground);
-}
-
-.timer-panel[data-warning^="countdown-"] progress::-webkit-progress-value,
-.timer-panel[data-warning^="countdown-"] progress::-moz-progress-bar {
-  background: var(--warning-accent);
-}
-
-.timer-panel[data-warning="deadline"] .timer-display,
-.timer-panel[data-warning^="overtime-"] .timer-display {
-  color: var(--danger);
-}
-
-.timer-panel[data-warning="overtime-2"] .status,
-.timer-panel[data-warning="overtime-3"] .status,
-.timer-panel[data-warning="overtime-4"] .status {
-  font-size: 0.82rem;
+.timer-panel[data-warning="deadline"],
+.timer-panel[data-warning^="overtime-"] {
+  --time-fg: var(--danger);
 }
 
 .timer-panel[data-warning="overtime-3"],
 .timer-panel[data-warning="overtime-4"] {
-  border-color: var(--danger);
-  background: var(--danger);
-  color: var(--danger-foreground);
+  --panel-border: var(--danger);
+  --panel-bg: var(--danger);
+  --panel-fg: var(--danger-foreground);
+  --time-fg: var(--danger-foreground);
+  --progress-track: color-mix(in srgb, var(--danger-foreground) 28%, transparent);
+  --progress-fill: var(--danger-foreground);
+  --meta-fg: var(--danger-foreground);
 }
 
-.timer-panel[data-warning="overtime-3"] .eyebrow,
-.timer-panel[data-warning="overtime-3"] .timer-heading h1,
-.timer-panel[data-warning="overtime-3"] .timer-display,
-.timer-panel[data-warning="overtime-4"] .eyebrow,
-.timer-panel[data-warning="overtime-4"] .timer-heading h1,
-.timer-panel[data-warning="overtime-4"] .timer-display {
-  color: var(--danger-foreground);
-}
-
-.timer-panel[data-warning="overtime-3"] .status,
-.timer-panel[data-warning="overtime-4"] .status {
-  background: var(--danger-foreground);
-  color: var(--danger);
-}
-
-.timer-panel[data-warning="countdown-3"] .capability-status,
-.timer-panel[data-warning="countdown-3"] .capability-notice {
-  color: var(--warning-accent-foreground);
-}
-
-.timer-panel[data-warning="overtime-3"] .capability-status,
-.timer-panel[data-warning="overtime-3"] .capability-notice,
-.timer-panel[data-warning="overtime-4"] .capability-status,
-.timer-panel[data-warning="overtime-4"] .capability-notice {
-  color: var(--danger-foreground);
-}
-
-.timer-heading h1 {
-  margin: 0;
-  font-size: clamp(1.15rem, 2.6vw, 1.65rem);
-  font-weight: 650;
-  letter-spacing: -0.04em;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .eyebrow {
@@ -347,7 +308,7 @@ body {
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  margin: clamp(1.1rem, 3vh, 1.8rem) 0 0;
+  margin: 0;
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   background: var(--accent-soft);
@@ -359,41 +320,20 @@ body {
   overflow-wrap: anywhere;
 }
 
-.timer-panel[data-phase="paused"][data-warning="on-track"] .status {
-  background: var(--surface-raised);
-  color: var(--muted);
-}
-
-.timer-panel[data-overtime="true"] .status {
-  background: var(--danger);
-  color: var(--danger-foreground);
-}
-
-.timer-panel[data-overtime="true"][data-warning="overtime-3"] .status,
-.timer-panel[data-overtime="true"][data-warning="overtime-4"] .status {
-  background: var(--danger-foreground);
-  color: var(--danger);
+.timer-display-frame {
+  width: 100%;
 }
 
 .timer-display {
   width: 100%;
   margin: 0.1rem 0 0.35rem;
-  color: var(--accent-strong);
+  color: var(--time-fg);
   font-size: clamp(4.4rem, 13vw, 8.5rem);
   font-variant-numeric: tabular-nums;
-  font-weight: 720;
+  font-weight: var(--time-weight);
   letter-spacing: -0.07em;
   line-height: 1.15;
   white-space: nowrap;
-}
-
-.timer-panel[data-overtime="true"] .timer-display {
-  color: var(--danger);
-}
-
-.timer-panel[data-overtime="true"][data-warning="overtime-3"] .timer-display,
-.timer-panel[data-overtime="true"][data-warning="overtime-4"] .timer-display {
-  color: var(--danger-foreground);
 }
 
 .progress-track {
@@ -402,7 +342,7 @@ body {
   margin: 0.5rem 0 clamp(1.3rem, 4vh, 2.2rem);
   overflow: hidden;
   border-radius: 999px;
-  background: var(--surface-raised);
+  background: var(--progress-track);
 }
 
 progress {
@@ -410,50 +350,66 @@ progress {
   width: 100%;
   height: 100%;
   border: 0;
+  border-radius: inherit;
   appearance: none;
   background: transparent;
 }
 
 progress::-webkit-progress-bar {
-  border-radius: 999px;
-  background: var(--surface-raised);
+  border-radius: inherit;
+  background: var(--progress-track);
 }
 
 progress::-webkit-progress-value {
-  border-radius: 999px;
-  background: var(--accent);
+  border-radius: inherit;
+  background: var(--progress-fill);
   transition: width 180ms linear;
 }
 
 progress::-moz-progress-bar {
-  border-radius: 999px;
-  background: var(--accent);
-}
-
-.timer-panel[data-overtime="true"] progress::-webkit-progress-value,
-.timer-panel[data-overtime="true"] progress::-moz-progress-bar {
-  background: var(--danger);
+  border-radius: inherit;
+  background: var(--progress-fill);
 }
 
 .timer-controls {
   display: flex;
   width: min(100%, 34rem);
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.75rem;
 }
 
-.capability-status,
+.capability-summary {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--meta-fg);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.capability-summary::before {
+  content: "⚠ " / "";
+}
+
+.capability-summary:empty,
+.capability-detail:empty,
+.capability-notice:empty {
+  display: none;
+}
+
+.capability-detail,
 .capability-notice {
   width: min(100%, 34rem);
-  min-height: 1.2em;
   margin: 0.55rem 0 0;
-  color: var(--muted);
+  color: var(--meta-fg, var(--muted));
   font-size: 0.8rem;
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
-.capability-notice:empty {
-  display: none;
+.capability-detail {
+  width: auto;
+  margin-top: 0.8rem;
 }
 
 .button {
@@ -648,13 +604,6 @@ progress::-moz-progress-bar {
   width: 100%;
   min-height: 2.75rem;
   margin-top: 0.8rem;
-}
-
-.page-footer {
-  padding: 0 0 0.25rem;
-  color: var(--muted);
-  font-size: 0.78rem;
-  text-align: center;
 }
 
 .confirm-dialog {
@@ -852,10 +801,6 @@ a:focus-visible {
     padding: 1rem 1.5rem;
   }
 
-  .status {
-    margin-top: 0.75rem;
-  }
-
   .timer-display {
     margin: 0;
     font-size: clamp(5rem, 11vw, 6.5rem);
@@ -901,13 +846,8 @@ a:focus-visible {
     padding: 1rem 0.75rem;
   }
 
-  .timer-heading .eyebrow,
   .duration-panel .eyebrow {
     display: none;
-  }
-
-  .status {
-    margin-top: 0.65rem;
   }
 
   .timer-display {
@@ -1100,72 +1040,152 @@ a:focus-visible {
   }
 }
 
+/* Active session: the timer fills the viewport; presenter controls stay small. */
+:root[data-session-active="true"] body {
+  padding: 0;
+}
+
+:root[data-session-active="true"] .app-shell {
+  width: 100%;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 0;
+}
+
+:root[data-session-active="true"] .topbar {
+  position: fixed;
+  z-index: 3;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  min-height: 0;
+}
+
+:root[data-session-active="true"] .brand {
+  display: none;
+}
+
+:root[data-session-active="true"] .persistence-notice {
+  margin:
+    max(0.75rem, env(safe-area-inset-top))
+    calc(max(0.75rem, env(safe-area-inset-right)) + 3.75rem)
+    0
+    max(0.75rem, env(safe-area-inset-left));
+}
+
 :root[data-session-active="true"] .workspace {
+  min-height: 0;
   grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   align-content: stretch;
   align-items: stretch;
+  gap: 0;
+  padding: 0;
 }
 
 :root[data-session-active="true"] .timer-panel {
   min-height: 0;
+  justify-content: flex-start;
+  gap: clamp(0.4rem, 1.5svh, 1rem);
+  padding:
+    max(0.75rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    0
+    max(1rem, env(safe-area-inset-left));
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   container-type: inline-size;
 }
 
-:root[data-session-active="true"] .timer-heading,
-:root[data-session-active="true"] .page-footer {
-  display: none;
+:root[data-session-active="true"] .timer-panel .status {
+  width: 100%;
+  height: auto;
+  min-height: 1.15em;
+  padding: 0 3.5rem;
+  border-radius: 0;
+  background: none;
+  color: var(--time-fg);
+  font-size: clamp(1rem, min(6svh, calc((100cqw - 7rem) / 20)), 3.5rem);
+  letter-spacing: 0.08em;
+  line-height: 1.15;
 }
 
-:root[data-session-active="true"] .status {
-  margin-top: 0;
+:root[data-session-active="true"] .timer-display-frame {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 0;
+  align-self: stretch;
+  width: auto;
+  place-items: center;
+  container-type: size;
 }
 
+/* Digits have no descenders, so a tight line box keeps them centred while the
+   size follows whichever of width or height runs out first. The right margin
+   balances the trailing negative letter-spacing so the digits look centred. */
 :root[data-session-active="true"] .timer-display {
-  font-size: min(calc(170cqw / var(--timer-characters)), 32svh, 15rem);
+  width: auto;
+  margin: 0 0.07em 0 0;
+  font-size: min(calc(185cqw / var(--timer-characters)), 125cqh);
+  line-height: 0.8;
+}
+
+:root[data-session-active="true"] .timer-controls {
+  width: auto;
+  max-width: 100%;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+:root[data-session-active="true"] .timer-controls .button {
+  min-width: 0;
+  min-height: 2.75rem;
+  flex: 0 1 auto;
+  padding: 0.4rem 1rem;
+  border-color: color-mix(in srgb, currentColor 32%, transparent);
+  background: transparent;
+  color: var(--panel-fg);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+:root[data-session-active="true"] .timer-controls .button:hover:not(:disabled) {
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+:root[data-session-active="true"] .capability-summary {
+  flex-basis: auto;
+}
+
+:root[data-session-active="true"] .capability-notice {
+  width: auto;
+  margin: 0;
+}
+
+:root[data-session-active="true"] .progress-track {
+  order: 1;
+  align-self: stretch;
+  width: auto;
+  height: clamp(0.5rem, 1.4svh, 1rem);
+  flex: 0 0 auto;
+  margin:
+    0
+    calc(-1 * max(1rem, env(safe-area-inset-right)))
+    env(safe-area-inset-bottom)
+    calc(-1 * max(1rem, env(safe-area-inset-left)));
+  border-radius: 0;
 }
 
 :root[data-session-active="true"] .duration-panel {
   position: fixed;
   z-index: 2;
-  top: calc(max(1rem, env(safe-area-inset-top)) + 4.25rem);
-  right: max(1rem, env(safe-area-inset-right), calc((100vw - 78rem) / 2));
-  width: min(calc(100% - 2rem), 24rem);
-  max-height: calc(100svh - max(1rem, env(safe-area-inset-top)) - max(1rem, env(safe-area-inset-bottom)) - 4.25rem);
+  top: calc(max(0.75rem, env(safe-area-inset-top)) + 3.75rem);
+  right: max(0.75rem, env(safe-area-inset-right));
+  width: min(calc(100% - 1.5rem), 24rem);
+  max-height: calc(100svh - max(0.75rem, env(safe-area-inset-top)) - max(0.75rem, env(safe-area-inset-bottom)) - 3.75rem);
   overflow-y: auto;
   overscroll-behavior: contain;
   box-shadow: 0 1rem 4rem rgb(0 0 0 / 25%);
-}
-
-@media (max-height: 520px) {
-  :root[data-session-active="true"] .topbar {
-    min-height: 3rem;
-  }
-
-  :root[data-session-active="true"] .workspace {
-    padding: 0.4rem 0;
-  }
-
-  :root[data-session-active="true"] .timer-panel {
-    padding: 0.5rem 1rem;
-  }
-
-  :root[data-session-active="true"] .status {
-    height: 2rem;
-  }
-
-  :root[data-session-active="true"] .timer-display {
-    margin: 0;
-    font-size: max(1.5rem, min(calc(170cqw / var(--timer-characters)), 27svh, calc((100svh - 16rem) / 1.15)));
-  }
-
-  :root[data-session-active="true"] .progress-track {
-    margin: 0.25rem 0 0.5rem;
-  }
-
-  :root[data-session-active="true"] .timer-controls .button {
-    min-height: 2.75rem;
-    padding: 0.5rem 0.65rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

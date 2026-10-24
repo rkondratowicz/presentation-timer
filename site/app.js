@@ -42,7 +42,8 @@ const progressElement = document.querySelector("#session-progress");
 const primaryAction = document.querySelector("#primary-action");
 const resetAction = document.querySelector("#reset-action");
 const fullscreenAction = document.querySelector("#fullscreen-action");
-const wakeLockStatus = document.querySelector("#wake-lock-status");
+const wakeLockSummary = document.querySelector("#wake-lock-summary");
+const wakeLockDetail = document.querySelector("#wake-lock-detail");
 const fullscreenNotice = document.querySelector("#fullscreen-notice");
 const durationForm = document.querySelector("#duration-form");
 const durationInput = document.querySelector("#duration-input");
@@ -87,7 +88,8 @@ let fullscreenActionWasFocused = false;
 const notices = new Map();
 
 function updateCapabilityControls(state) {
-  wakeLockStatus.textContent = state.wakeLockMessage;
+  wakeLockSummary.textContent = state.wakeLockSummary;
+  wakeLockDetail.textContent = state.wakeLockMessage;
   fullscreenAction.hidden = !state.fullscreenSupported;
   fullscreenAction.textContent = state.fullscreenActive ? "Exit full screen" : "Enter full screen";
   fullscreenAction.setAttribute("aria-label", fullscreenAction.textContent);
